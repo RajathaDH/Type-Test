@@ -1,0 +1,50 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    width: 80%;
+    height: 80vh;
+    margin: 20px auto;
+    background: blue;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.section-word-display, .section-text-input{
+    position: relative;
+    width: 80%;
+    height: 100px;
+    background: white;
+    margin: 40px auto 20px auto;
+    padding: 10px;
+}
+
+.section-word-display{
+    font-size: 40px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.text-input{
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+}
+
+.section-timer{
+    font-size: 40px;
+}
+
+.btn{
+    font-size: 20px;
+    margin: 20px;
+    padding: 20px;
+}
+
+.section-word-display p{
+    display: inline;
+}
