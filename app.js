@@ -41,7 +41,9 @@ var countDownTimer;
 
 function setup(){
     wordDisplay.innerHTML = "";
-    generateRandomWords();
+    for(let i = 0; i < 10; i++){
+        generateRandomWords();
+    }
     input.value = "";
     results.style.display = "none";
     currentWordCount = 0;
@@ -55,11 +57,14 @@ function setup(){
 }
 
 function generateRandomWords(){
-    for(let i = 0; i < 10; i++){
+    const randomWord = document.createElement('p');
+    randomWord.innerText = WORD_ARRAY[Math.floor(Math.random() * WORD_ARRAY.length)] + " ";
+    wordDisplay.appendChild(randomWord);
+    /*for(let i = 0; i < 10; i++){
         const randomWord = document.createElement('p');
         randomWord.innerText = WORD_ARRAY[Math.floor(Math.random() * WORD_ARRAY.length)] + " ";
         wordDisplay.appendChild(randomWord);
-    }
+    }*/
 }
 
 startButton.addEventListener('click', setup);
@@ -83,11 +88,12 @@ function checkText(){
         currentWordCount++;
         input.value = "";
 
-        if(currentWordCount == 5){
-            for(let i = 0; i < 5; i++){
+        if(currentWordCount == 3){
+            wordDisplay.children[0].remove();
+            /*for(let i = 0; i < 10; i++){
                 wordDisplay.children[0].remove();
-            }
-            currentWordCount = 0;
+            }*/
+            currentWordCount = 2;
             generateRandomWords();
         }
     }

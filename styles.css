@@ -28,9 +28,11 @@ body{
 }
 
 .section-word-display{
+    display: flex;
     font-size: 40px;
-    max-width: 100%;
+    white-space: pre-wrap;
     overflow: hidden;
+    align-items: center;
 }
 
 .text-input{
@@ -41,6 +43,7 @@ body{
 
 .section-timer{
     font-size: 40px;
+    font-weight: bold;
 }
 
 .btn{
@@ -51,4 +54,9 @@ body{
 
 .section-word-display p{
     display: inline;
+}
+
+.results p{
+    font-size: 2rem;
+    font-weight: bold;
 }
