@@ -1,16 +1,46 @@
+const WORD_ARRAY = [
+    "the",
+    "big",
+    "brown",
+    "lazy",
+    "fox",
+    "jumped",
+    "over",
+    "fence",
+    "university",
+    "zebra",
+    "country",
+    "mountain",
+    "cat",
+    "dog",
+    "because",
+    "of",
+    "human",
+    "dinosaur",
+    "television",
+    "radio",
+    "bike",
+    "car",
+    "girrafe",
+    "location",
+    "house",
+    "five",
+    "ten",
+    "program"
+];
+
 const wordDisplay = document.getElementById('word-display');
 const input = document.getElementById('input');
 const timer = document.getElementById('timer');
 const startButton = document.getElementById('start');
-const restartButton = document.getElementById('restart');
+//const restartButton = document.getElementById('restart');
 const results = document.querySelector('.results');
 const wpm = document.getElementById('wpm');
-
-const wordArray = ["the", "big", "brown", "lazy", "fox", "jumped", "over", "the", "fence"];
 
 var countDownTimer;
 
 function setup(){
+    wordDisplay.innerHTML = "";
     generateRandomWords();
     input.value = "";
     results.style.display = "none";
@@ -21,13 +51,13 @@ function setup(){
     input.focus();
     time = 60;
     timer.innerText = time;
+    correctWords = 0;
 }
 
 function generateRandomWords(){
-    wordDisplay.innerHTML = "";
-    for(let i = 0; i < 20; i++){
+    for(let i = 0; i < 10; i++){
         const randomWord = document.createElement('p');
-        randomWord.innerText = wordArray[Math.floor(Math.random() * wordArray.length)] + " ";
+        randomWord.innerText = WORD_ARRAY[Math.floor(Math.random() * WORD_ARRAY.length)] + " ";
         wordDisplay.appendChild(randomWord);
     }
 }
@@ -52,6 +82,14 @@ function checkText(){
 
         currentWordCount++;
         input.value = "";
+
+        if(currentWordCount == 5){
+            for(let i = 0; i < 5; i++){
+                wordDisplay.children[0].remove();
+            }
+            currentWordCount = 0;
+            generateRandomWords();
+        }
     }
 }
 
@@ -61,7 +99,7 @@ function countDown(){
     time--;
     timer.innerText = time;
 
-    if(time == 55){
+    if(time == 0){
         clearInterval(countDownTimer);
         showResults();
         input.style.display = "none";
