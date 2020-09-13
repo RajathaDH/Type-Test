@@ -12,6 +12,7 @@ var countDownTimer;
 
 function setup(){
     generateRandomWords();
+    input.value = "";
     results.style.display = "none";
     currentWordCount = 0;
     clearInterval(countDownTimer);
@@ -33,7 +34,8 @@ function generateRandomWords(){
 
 startButton.addEventListener('click', setup);
 
-var currentWordCount = 0;
+let currentWordCount = 0;
+let correctWords = 0;
 
 function checkText(){
     const currentWord = wordDisplay.children[currentWordCount].innerText;
@@ -42,6 +44,7 @@ function checkText(){
     if(lastChar == " "){
         if(input.value == currentWord){
             wordDisplay.children[currentWordCount].style.color = "green";
+            correctWords++;
         }
         else{
             wordDisplay.children[currentWordCount].style.color = "red";
@@ -58,7 +61,7 @@ function countDown(){
     time--;
     timer.innerText = time;
 
-    if(time == 0){
+    if(time == 55){
         clearInterval(countDownTimer);
         showResults();
         input.style.display = "none";
@@ -67,5 +70,5 @@ function countDown(){
 
 function showResults(){
     results.style.display = "block";
-    wpm.innerText = 10;
+    wpm.innerText = correctWords;
 }
