@@ -112,7 +112,6 @@ function checkText(){
             generateRandomWords();
         }
     }
-    console.log(incorrectLetters);
 }
 
 let time = 60;

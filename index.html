@@ -11,7 +11,7 @@
     <div class="container">
         <div class="section-word-display" id="word-display"></div>
         <div class="section-text-input">
-            <input type="text" class="text-input" id="input" oninput="checkText()">
+            <input type="text" class="text-input" id="input" oninput="checkText()" style="display: none;">
         </div>
         <div class="section-timer">
             <p id="timer">60</p>
@@ -20,7 +20,7 @@
             <button class="btn-start" id="start">Start</button>
             <!-- <button class="btn btn-restart" id="restart">Restart</button> -->
         </div>
-        <div class="results">
+        <div class="results" style="display: none;">
             <p>WPM</p>
             <p id="wpm">0</p>
         </div>
