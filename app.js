@@ -71,10 +71,24 @@ startButton.addEventListener('click', setup);
 
 let currentWordCount = 0;
 let correctWords = 0;
+//let incorrectLetters = 0;
+let currentLength = 0;
 
 function checkText(){
     const currentWord = wordDisplay.children[currentWordCount].innerText;
     const lastChar = input.value[input.value.length - 1];
+
+    if(input.value.length < currentLength){
+        //incorrectLetters--;
+        wordDisplay.children[currentWordCount].style.background = "none";
+    }
+
+    currentLength = input.value.length;
+
+    if(lastChar != currentWord[input.value.length - 1]){
+        //incorrectLetters++;
+        wordDisplay.children[currentWordCount].style.background = "red";
+    }
 
     if(lastChar == " "){
         if(input.value == currentWord){
@@ -83,6 +97,7 @@ function checkText(){
         }
         else{
             wordDisplay.children[currentWordCount].style.color = "red";
+            wordDisplay.children[currentWordCount].style.background = "none";
         }
 
         currentWordCount++;
@@ -97,6 +112,7 @@ function checkText(){
             generateRandomWords();
         }
     }
+    console.log(incorrectLetters);
 }
 
 let time = 60;
