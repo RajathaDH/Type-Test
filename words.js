@@ -1,0 +1,32 @@
+words = [
+    "the",
+    "big",
+    "brown",
+    "lazy",
+    "fox",
+    "jumped",
+    "over",
+    "fence",
+    "university",
+    "zebra",
+    "country",
+    "mountain",
+    "cat",
+    "dog",
+    "because",
+    "of",
+    "human",
+    "dinosaur",
+    "television",
+    "radio",
+    "bike",
+    "car",
+    "girrafe",
+    "location",
+    "house",
+    "five",
+    "ten",
+    "program"
+]
+
+export default words;
