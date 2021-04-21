@@ -1,133 +1,114 @@
-const WORD_ARRAY = [
-    "the",
-    "big",
-    "brown",
-    "lazy",
-    "fox",
-    "jumped",
-    "over",
-    "fence",
-    "university",
-    "zebra",
-    "country",
-    "mountain",
-    "cat",
-    "dog",
-    "because",
-    "of",
-    "human",
-    "dinosaur",
-    "television",
-    "radio",
-    "bike",
-    "car",
-    "girrafe",
-    "location",
-    "house",
-    "five",
-    "ten",
-    "program"
-];
+import wordsList from './words.js';
 
-const wordDisplay = document.getElementById('word-display');
-const input = document.getElementById('input');
-const timer = document.getElementById('timer');
-const startButton = document.getElementById('start');
-//const restartButton = document.getElementById('restart');
-const results = document.querySelector('.results');
-const wpm = document.getElementById('wpm');
+const wordRow1Element = document.querySelector('#wordRow1');
+const wordRow2Element = document.querySelector('#wordRow2');
+const textInputElement = document.querySelector('#textInput');
+const timerElement = document.querySelector('#timer');
+const startButtonElement = document.querySelector('#start');
+const resultsElement = document.querySelector('#results');
+const wpmElement = document.querySelector('#wpm');
 
-var countDownTimer;
+const colours = {
+    CORRECT_COLOUR: 'green',
+    INCORRECT_COLOUR: 'red',
+    BACKGROUND_COLOUR: 'yellow'
+};
 
-function setup(){
-    wordDisplay.innerHTML = "";
-    for(let i = 0; i < 10; i++){
-        generateRandomWords();
-    }
-    input.value = "";
-    results.style.display = "none";
-    currentWordCount = 0;
-    clearInterval(countDownTimer);
-    countDownTimer = setInterval(countDown, 1000);
-    input.style.display = "block";
-    input.focus();
-    time = 60;
-    timer.innerText = time;
-    correctWords = 0;
-}
-
-function generateRandomWords(){
-    const randomWord = document.createElement('p');
-    randomWord.innerText = WORD_ARRAY[Math.floor(Math.random() * WORD_ARRAY.length)] + " ";
-    wordDisplay.appendChild(randomWord);
-    /*for(let i = 0; i < 10; i++){
-        const randomWord = document.createElement('p');
-        randomWord.innerText = WORD_ARRAY[Math.floor(Math.random() * WORD_ARRAY.length)] + " ";
-        wordDisplay.appendChild(randomWord);
-    }*/
-}
-
-startButton.addEventListener('click', setup);
-
+const WORDS_LENGTH = 10;
+let words = {
+    'row-1': [],
+    'row-2': []
+};
 let currentWordCount = 0;
-let correctWords = 0;
-//let incorrectLetters = 0;
+let correctWordsCount = 0;
 let currentLength = 0;
+let timer;
+let currentTime = 60;
 
-function checkText(){
-    const currentWord = wordDisplay.children[currentWordCount].innerText;
-    const lastChar = input.value[input.value.length - 1];
+startButtonElement.addEventListener('click', setup);
 
-    if(input.value.length < currentLength){
-        //incorrectLetters--;
-        wordDisplay.children[currentWordCount].style.background = "none";
+function getRandomWords(length) {
+    let words = [];
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * wordsList.length);
+        const randomWord = wordsList[randomIndex];
+        words.push(randomWord);
     }
 
-    currentLength = input.value.length;
+    return words;
+}
 
-    if(lastChar != currentWord[input.value.length - 1]){
-        //incorrectLetters++;
-        wordDisplay.children[currentWordCount].style.background = "red";
-    }
+function setup() {
+    words['row-1'] = getRandomWords(WORDS_LENGTH);
+    words['row-2'] = getRandomWords(WORDS_LENGTH);
 
-    if(lastChar == " "){
-        if(input.value == currentWord){
-            wordDisplay.children[currentWordCount].style.color = "green";
-            correctWords++;
-        }
-        else{
-            wordDisplay.children[currentWordCount].style.color = "red";
-            wordDisplay.children[currentWordCount].style.background = "none";
-        }
+    renderWords(words);
+    textInputElement.value = '';
+    textInputElement.focus();
 
-        currentWordCount++;
-        input.value = "";
+    currentTime = 60;
+    timerElement.textContent = currentTime; 
 
-        if(currentWordCount == 3){
-            wordDisplay.children[0].remove();
-            /*for(let i = 0; i < 10; i++){
-                wordDisplay.children[0].remove();
-            }*/
-            currentWordCount = 2;
-            generateRandomWords();
-        }
+    wordRow1Element.children[0].style.background = colours.BACKGROUND_COLOUR;
+
+    clearInterval(timer);
+    timer = setInterval(countDown, 1000);
+}
+
+function countDown() {
+    currentTime -= 1;
+
+    timerElement.textContent = currentTime;
+
+    if (currentTime <= 0) {
+        clearInterval(timer);
     }
 }
 
-let time = 60;
+function renderWords(words) {
+    wordRow1Element.innerHTML = '';
+    wordRow2Element.innerHTML = '';
 
-function countDown(){
-    time--;
-    timer.innerText = time;
+    for (let i = 0; i < WORDS_LENGTH; i++) {
+        const row1Word = document.createElement('span');
+        row1Word.textContent = words['row-1'][i] + ' ';
+        wordRow1Element.appendChild(row1Word);
 
-    if(time == 0){
-        clearInterval(countDownTimer);
-        showResults();
-        input.style.display = "none";
+        const row2Word = document.createElement('span');
+        row2Word.textContent = words['row-2'][i] + ' ';
+        wordRow2Element.appendChild(row2Word);
     }
 }
 
-function showResults(){
-    results.style.display = "block";
-    wpm.innerText = correctWords;
+function checkText() {
+    const currentWordElement = wordRow1Element.children[currentWordCount];
+    const currentWord = currentWordElement.textContent;
+    const inputLength = textInputElement.value.length;
+    const lastInputCharacter = textInputElement.value[textInputElement.value.length - 1];
+
+    if (currentWord.slice(0, inputLength) === textInputElement.value) {
+        currentWordElement.style.background = colours.BACKGROUND_COLOUR;
+    } else {
+        currentWordElement.style.background = colours.INCORRECT_COLOUR;
+    }
+
+    currentLength = inputLength;
+    
+    if (lastInputCharacter === ' ') {
+        if (textInputElement.value === currentWord) {
+            currentWordElement.style.color = colours.CORRECT_COLOUR;
+            correctWordsCount += 1;
+        } else {
+            currentWordElement.style.color = colours.INCORRECT_COLOUR;
+        }
+
+        currentWordCount += 1;
+        textInputElement.value = '';
+        currentWordElement.style.background = 'none';
+        wordRow1Element.children[currentWordCount].style.background = colours.BACKGROUND_COLOUR;
+    }
 }
+
+// expose function to window, only available in this file due to type module
+window.checkText = checkText;
