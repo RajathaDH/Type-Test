@@ -104,11 +104,33 @@ function checkText() {
         }
 
         currentWordCount += 1;
-        textInputElement.value = '';
-        currentWordElement.style.background = 'none';
-        wordRow1Element.children[currentWordCount].style.background = colours.BACKGROUND_COLOUR;
+        if (currentWordCount < 10) {
+            textInputElement.value = '';
+            currentWordElement.style.background = 'none';
+            wordRow1Element.children[currentWordCount].style.background = colours.BACKGROUND_COLOUR;
+        } else {
+            currentWordCount = 0;
+            currentLength = 0;
+            updateWords();
+            textInputElement.value = '';
+            wordRow1Element.children[0].style.background = colours.BACKGROUND_COLOUR;
+        }
     }
 }
 
 // expose function to window, only available in this file due to type module
 window.checkText = checkText;
+
+function updateWords() {
+    wordRow1Element.innerHTML = wordRow2Element.innerHTML;
+
+    words['row-2'] = getRandomWords(WORDS_LENGTH);
+
+    wordRow2Element.innerHTML = '';
+
+    for (let i = 0; i < WORDS_LENGTH; i++) {
+        const row2Word = document.createElement('span');
+        row2Word.textContent = words['row-2'][i] + ' ';
+        wordRow2Element.appendChild(row2Word);
+    }
+}
