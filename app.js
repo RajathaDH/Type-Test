@@ -19,9 +19,9 @@ let words = {
     'row-1': [],
     'row-2': []
 };
-let currentWordCount = 0;
+let currentWordIndex = 0;
 let correctWordsCount = 0;
-let currentLength = 0;
+let totalWordsCount = 0;
 let timer;
 let currentTime = 60;
 
@@ -43,7 +43,9 @@ function setup() {
     words['row-1'] = getRandomWords(WORDS_LENGTH);
     words['row-2'] = getRandomWords(WORDS_LENGTH);
 
-    renderWords(words);
+    renderWords(words['row-1'], wordRow1Element);
+    renderWords(words['row-2'], wordRow2Element);
+
     textInputElement.value = '';
     textInputElement.focus();
 
@@ -66,23 +68,18 @@ function countDown() {
     }
 }
 
-function renderWords(words) {
-    wordRow1Element.innerHTML = '';
-    wordRow2Element.innerHTML = '';
+function renderWords(words, element) {
+    element.innerHTML = '';
 
-    for (let i = 0; i < WORDS_LENGTH; i++) {
-        const row1Word = document.createElement('span');
-        row1Word.textContent = words['row-1'][i] + ' ';
-        wordRow1Element.appendChild(row1Word);
-
-        const row2Word = document.createElement('span');
-        row2Word.textContent = words['row-2'][i] + ' ';
-        wordRow2Element.appendChild(row2Word);
+    for (let i = 0; i < words.length; i++) {
+        const word = document.createElement('span');
+        word.textContent = words[i] + ' ';
+        element.appendChild(word);
     }
 }
 
 function checkText() {
-    const currentWordElement = wordRow1Element.children[currentWordCount];
+    const currentWordElement = wordRow1Element.children[currentWordIndex];
     const currentWord = currentWordElement.textContent;
     const inputLength = textInputElement.value.length;
     const lastInputCharacter = textInputElement.value[textInputElement.value.length - 1];
@@ -92,8 +89,6 @@ function checkText() {
     } else {
         currentWordElement.style.background = colours.INCORRECT_COLOUR;
     }
-
-    currentLength = inputLength;
     
     if (lastInputCharacter === ' ') {
         if (textInputElement.value === currentWord) {
@@ -103,14 +98,15 @@ function checkText() {
             currentWordElement.style.color = colours.INCORRECT_COLOUR;
         }
 
-        currentWordCount += 1;
-        if (currentWordCount < 10) {
+        totalWordsCount += 1;
+        currentWordIndex += 1;
+
+        if (currentWordIndex < 10) {
             textInputElement.value = '';
             currentWordElement.style.background = 'none';
-            wordRow1Element.children[currentWordCount].style.background = colours.BACKGROUND_COLOUR;
+            wordRow1Element.children[currentWordIndex].style.background = colours.BACKGROUND_COLOUR;
         } else {
-            currentWordCount = 0;
-            currentLength = 0;
+            currentWordIndex = 0;
             updateWords();
             textInputElement.value = '';
             wordRow1Element.children[0].style.background = colours.BACKGROUND_COLOUR;
@@ -126,11 +122,5 @@ function updateWords() {
 
     words['row-2'] = getRandomWords(WORDS_LENGTH);
 
-    wordRow2Element.innerHTML = '';
-
-    for (let i = 0; i < WORDS_LENGTH; i++) {
-        const row2Word = document.createElement('span');
-        row2Word.textContent = words['row-2'][i] + ' ';
-        wordRow2Element.appendChild(row2Word);
-    }
+    renderWords(words['row-2'], wordRow2Element);
 }
