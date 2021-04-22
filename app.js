@@ -7,6 +7,7 @@ const timerElement = document.querySelector('#timer');
 const startButtonElement = document.querySelector('#start');
 const resultsElement = document.querySelector('#results');
 const wpmElement = document.querySelector('#wpm');
+const accuracyElement = document.querySelector('#accuracy');
 
 const colours = {
     CORRECT_COLOUR: 'green',
@@ -23,7 +24,7 @@ let currentWordIndex = 0;
 let correctWordsCount = 0;
 let totalWordsCount = 0;
 let timer;
-let currentTime = 60;
+let currentTime = 0;
 
 startButtonElement.addEventListener('click', setup);
 
@@ -46,14 +47,17 @@ function setup() {
     renderWords(words['row-1'], wordRow1Element);
     renderWords(words['row-2'], wordRow2Element);
 
+    resultsElement.style.display = 'none';
+    wordRow1Element.children[0].style.background = colours.BACKGROUND_COLOUR;
     textInputElement.value = '';
     textInputElement.focus();
 
+    correctWordsCount = 0;
+    totalWordsCount = 0;
+    currentWordIndex = 0;
+
     currentTime = 60;
     timerElement.textContent = currentTime; 
-
-    wordRow1Element.children[0].style.background = colours.BACKGROUND_COLOUR;
-
     clearInterval(timer);
     timer = setInterval(countDown, 1000);
 }
@@ -65,6 +69,7 @@ function countDown() {
 
     if (currentTime <= 0) {
         clearInterval(timer);
+        showResults();
     }
 }
 
@@ -123,4 +128,11 @@ function updateWords() {
     words['row-2'] = getRandomWords(WORDS_LENGTH);
 
     renderWords(words['row-2'], wordRow2Element);
+}
+
+function showResults() {
+    wpmElement.textContent = correctWordsCount;
+    accuracyElement.textContent = `${(correctWordsCount / totalWordsCount) * 100}%`;
+
+    resultsElement.style.display = '';
 }
