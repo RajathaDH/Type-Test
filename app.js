@@ -16,6 +16,7 @@ const colours = {
 };
 
 const WORDS_LENGTH = 10;
+const TIME_LIMIT = 60;
 let words = {
     'row-1': [],
     'row-2': []
@@ -56,8 +57,8 @@ function setup() {
     totalWordsCount = 0;
     currentWordIndex = 0;
 
-    currentTime = 60;
-    timerElement.textContent = currentTime; 
+    currentTime = TIME_LIMIT;
+    timerElement.textContent = currentTime;
     clearInterval(timer);
     timer = setInterval(countDown, 1000);
 }
@@ -132,7 +133,7 @@ function updateWords() {
 
 function showResults() {
     wpmElement.textContent = correctWordsCount;
-    accuracyElement.textContent = `${(correctWordsCount / totalWordsCount) * 100}%`;
+    accuracyElement.textContent = totalWordsCount ? `${(correctWordsCount / totalWordsCount) * 100}%` : '0%';
 
     resultsElement.style.display = '';
 }
